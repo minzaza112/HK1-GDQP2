@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trắc nghiệm Quốc phòng - An ninh</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --correct-color: #28a745;
+            --wrong-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        select {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            outline: none;
+        }
+
+        #quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .question-title {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            word-wrap: break-word;
+        }
+
+        .option-btn:active {
+            background-color: #e2e6ea;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .btn-load-more {
+            display: none;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 86, 179, 0.2);
+        }
+
+        .btn-load-more:active {
+            background-color: #004494;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ôn Tập Trắc Nghiệm</h1>
+
+    <div class="controls">
+        <select id="lesson-select" onchange="startLesson()">
+            <option value="none">-- Chọn bài học --</option>
+            <option value="bai1">Bài 1: Phòng chống chiến lược DBHB</option>
+            <option value="bai2">Bài 2: Vấn đề dân tộc, tôn giáo</option>
+            <option value="bai3">Bài 3: Phòng chống vi phạm pháp luật bảo vệ môi trường</option>
+            <option value="bai4">Bài 4: Phòng chống vi phạm pháp luật an toàn giao thông</option>
+            <option value="bai5">Bài 5: Phòng chống tội phạm và tệ nạn xã hội</option>
+        </select>
+    </div>
+
+    <div class="progress-text" id="progress-text"></div>
+
+    <div id="quiz-container"></div>
+
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button class="btn-load-more" id="random-btn" onclick="showRandomQuestion()" style="display: none; flex: 1;">Câu ngẫu nhiên</button>
+        <button class="btn-load-more" id="add-btn" onclick="expandPool()" style="display: none; flex: 1; background-color: #28a745;">Thêm 5 câu mới</button>
+    </div>
+
+    <script src="data.js"></script>
+
+    <script>
+        let currentLessonQuestions = []; // Lưu toàn bộ câu hỏi của bài
+        let activePoolSize = 0; // Số lượng câu hỏi đang mở khóa (5, 10, 15...)
+        const POOL_INCREMENT = 5; // Mỗi lần thêm 5 câu
+
+        // Hàm xáo trộn mảng (dùng để xáo trộn đáp án)
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Bắt đầu bài học
+        function startLesson() {
+            const lessonKey = document.getElementById('lesson-select').value;
+            const container = document.getElementById('quiz-container');
+            const randomBtn = document.getElementById('random-btn');
+            const addBtn = document.getElementById('add-btn');
+            const progressText = document.getElementById('progress-text');
+
+            // Xóa dữ liệu cũ
+            container.innerHTML = '';
+
+            if (lessonKey === 'none' || !database[lessonKey]) {
+                randomBtn.style.display = 'none';
+                addBtn.style.display = 'none';
+                progressText.innerText = '';
+                return;
+            }
+
+            // Lấy nguyên danh sách gốc của bài học (không xáo trộn mảng gốc để lấy đúng thứ tự từ đầu)
+            currentLessonQuestions = database[lessonKey];
+
+            // Mở khóa 5 câu đầu tiên
+            activePoolSize = Math.min(POOL_INCREMENT, currentLessonQuestions.length);
+
+            // Hiển thị nút
+            randomBtn.style.display = 'block';
+
+            // Rút 1 câu ngẫu nhiên trong pool đầu tiên
+            showRandomQuestion();
+        }
+
+        // Hàm mở rộng thêm 5 câu vào bộ
+        function expandPool() {
+            // Tăng giới hạn lên thêm 5, không vượt quá tổng số câu
+            activePoolSize = Math.min(activePoolSize + POOL_INCREMENT, currentLessonQuestions.length);
+            // Hiển thị ngay 1 câu random trong bộ mới
+            showRandomQuestion();
+        }
+
+        // Hiển thị 1 câu ngẫu nhiên trong phạm vi activePoolSize
+        function showRandomQuestion() {
+            const container = document.getElementById('quiz-container');
+            const addBtn = document.getElementById('add-btn');
+            const progressText = document.getElementById('progress-text');
+
+            if (activePoolSize === 0) return;
+
+            // Xóa màn hình để hiện 1 câu duy nhất
+            container.innerHTML = '';
+
+            // Random 1 index từ 0 đến (activePoolSize - 1)
+            const randomIndex = Math.floor(Math.random() * activePoolSize);
+            const qData = currentLessonQuestions[randomIndex];
+
+            // --- TẠO GIAO DIỆN CÂU HỎI ---
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const title = document.createElement('h3');
+            title.className = 'question-title';
+            title.innerText = `Câu hỏi: ${qData.q}`;
+            card.appendChild(title);
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'options-container';
+
+            // Xáo trộn đáp án trước khi in ra
+            const shuffledOptions = shuffleArray(qData.a);
+
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.text;
+
+                btn.onclick = function() {
+                    const allBtns = optionsContainer.querySelectorAll('.option-btn');
+                    allBtns.forEach(b => b.disabled = true);
+
+                    if (opt.correct) {
+                        btn.style.backgroundColor = 'var(--correct-color)';
+                        btn.style.color = 'white';
+                        btn.style.borderColor = 'var(--correct-color)';
+                    } else {
+                        btn.style.backgroundColor = 'var(--wrong-color)';
+                        btn.style.color = 'white';
+                        btn.style.borderColor = 'var(--wrong-color)';
+
+                        // Hiển thị đáp án đúng nếu chọn sai
+                        allBtns.forEach(b => {
+                            if(shuffledOptions.find(o => o.text === b.innerText).correct) {
+                                b.style.backgroundColor = 'var(--correct-color)';
+                                b.style.color = 'white';
+                            }
+                        });
+                    }
+                };
+                optionsContainer.appendChild(btn);
+            });
+
+            card.appendChild(optionsContainer);
+            container.appendChild(card);
+            // -----------------------------
+
+            // Cập nhật text tiến độ
+            progressText.innerText = `Đang random ngẫu nhiên trong ${activePoolSize} câu (Tổng bài có ${currentLessonQuestions.length} câu)`;
+
+            // Ẩn nút "Thêm 5 câu" nếu đã mở khóa hết toàn bộ câu hỏi của bài
+            if (activePoolSize >= currentLessonQuestions.length) {
+                addBtn.style.display = 'none';
+                progressText.innerText = `Đang random toàn bộ ${currentLessonQuestions.length} câu của bài`;
+            } else {
+                addBtn.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
