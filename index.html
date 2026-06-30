@@ -149,11 +149,11 @@
     <script src="data.js"></script>
 
     <script>
-        let currentLessonQuestions = []; // Lưu toàn bộ câu hỏi của bài
-        let activePoolSize = 0; // Số lượng câu hỏi đang mở khóa (5, 10, 15...)
-        const POOL_INCREMENT = 5; // Mỗi lần thêm 5 câu
+        let currentLessonQuestions = [];
+        let activePoolSize = 0;
+        const POOL_INCREMENT = 5;
+        let isAnswered = false;
 
-        // Hàm xáo trộn mảng (dùng để xáo trộn đáp án)
         function shuffleArray(array) {
             let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -163,8 +163,6 @@
             return arr;
         }
 
-        // Bắt đầu bài học
-        // Bắt đầu bài học
         function startLesson() {
             const lessonKey = document.getElementById('lesson-select').value;
             const container = document.getElementById('quiz-container');
@@ -172,10 +170,9 @@
             const addBtn = document.getElementById('add-btn');
             const progressText = document.getElementById('progress-text');
 
-            // Xóa dữ liệu cũ
             container.innerHTML = '';
+            isAnswered = false;
 
-            // Nếu chưa chọn bài thì ẩn các nút
             if (lessonKey === 'none') {
                 randomBtn.style.display = 'none';
                 addBtn.style.display = 'none';
@@ -183,39 +180,27 @@
                 return;
             }
 
-            // Xử lý logic gộp bài
             if (lessonKey === 'all') {
                 let allQuestions = [];
-                // Lặp qua toàn bộ database để gộp câu hỏi
                 for (let key in database) {
                     allQuestions = allQuestions.concat(database[key]);
                 }
-                // Xáo trộn toàn bộ để 5 câu đầu tiên được lấy từ các bài khác nhau
                 currentLessonQuestions = shuffleArray(allQuestions);
             } else {
-                // Nếu chọn bài cụ thể thì lấy đúng danh sách bài đó
                 currentLessonQuestions = database[lessonKey];
             }
 
-            // Mở khóa 5 câu đầu tiên
             activePoolSize = Math.min(POOL_INCREMENT, currentLessonQuestions.length);
-
-            // Hiển thị nút Câu ngẫu nhiên
             randomBtn.style.display = 'block';
 
-            // Rút 1 câu ngẫu nhiên trong pool đầu tiên
             showRandomQuestion();
         }
 
-        // Hàm mở rộng thêm 5 câu vào bộ
         function expandPool() {
-            // Tăng giới hạn lên thêm 5, không vượt quá tổng số câu
             activePoolSize = Math.min(activePoolSize + POOL_INCREMENT, currentLessonQuestions.length);
-            // Hiển thị ngay 1 câu random trong bộ mới
             showRandomQuestion();
         }
 
-        // Hiển thị 1 câu ngẫu nhiên trong phạm vi activePoolSize
         function showRandomQuestion() {
             const container = document.getElementById('quiz-container');
             const addBtn = document.getElementById('add-btn');
@@ -223,14 +208,12 @@
 
             if (activePoolSize === 0) return;
 
-            // Xóa màn hình để hiện 1 câu duy nhất
+            isAnswered = false;
             container.innerHTML = '';
 
-            // Random 1 index từ 0 đến (activePoolSize - 1)
             const randomIndex = Math.floor(Math.random() * activePoolSize);
             const qData = currentLessonQuestions[randomIndex];
 
-            // --- TẠO GIAO DIỆN CÂU HỎI ---
             const card = document.createElement('div');
             card.className = 'question-card';
 
@@ -242,7 +225,6 @@
             const optionsContainer = document.createElement('div');
             optionsContainer.className = 'options-container';
 
-            // Xáo trộn đáp án trước khi in ra
             const shuffledOptions = shuffleArray(qData.a);
 
             shuffledOptions.forEach(opt => {
@@ -250,9 +232,21 @@
                 btn.className = 'option-btn';
                 btn.innerText = opt.text;
 
-                btn.onclick = function() {
+                btn.onclick = function(e) {
+                    // Nếu đã trả lời rồi, DỪNG xử lý logic chấm điểm ở đây
+                    // và cho phép cú click xuyên qua để document bắt được sự kiện chuyển câu
+                    if (isAnswered) return;
+
+                    // Nếu CHƯA trả lời, chặn cú click lại để không bị tự nhảy câu ngay lúc vừa chọn
+                    e.stopPropagation();
+
                     const allBtns = optionsContainer.querySelectorAll('.option-btn');
-                    allBtns.forEach(b => b.disabled = true);
+
+                    // Bỏ b.disabled = true đi, thay bằng việc đổi con trỏ chuột
+                    allBtns.forEach(b => {
+                        b.style.cursor = 'default';
+                        b.style.opacity = '0.9';
+                    });
 
                     if (opt.correct) {
                         btn.style.backgroundColor = 'var(--correct-color)';
@@ -263,7 +257,6 @@
                         btn.style.color = 'white';
                         btn.style.borderColor = 'var(--wrong-color)';
 
-                        // Hiển thị đáp án đúng nếu chọn sai
                         allBtns.forEach(b => {
                             if(shuffledOptions.find(o => o.text === b.innerText).correct) {
                                 b.style.backgroundColor = 'var(--correct-color)';
@@ -271,25 +264,33 @@
                             }
                         });
                     }
+
+                    isAnswered = true;
+                    progressText.innerHTML = `Đang random trong ${activePoolSize}/${currentLessonQuestions.length} câu <br><strong style="color:var(--primary-color)">(Bấm vào bất kỳ đâu để tiếp tục)</strong>`;
                 };
                 optionsContainer.appendChild(btn);
             });
 
             card.appendChild(optionsContainer);
             container.appendChild(card);
-            // -----------------------------
 
-            // Cập nhật text tiến độ
-            progressText.innerText = `Đang random ngẫu nhiên trong ${activePoolSize} câu (Tổng bài có ${currentLessonQuestions.length} câu)`;
-
-            // Ẩn nút "Thêm 5 câu" nếu đã mở khóa hết toàn bộ câu hỏi của bài
             if (activePoolSize >= currentLessonQuestions.length) {
                 addBtn.style.display = 'none';
                 progressText.innerText = `Đang random toàn bộ ${currentLessonQuestions.length} câu của bài`;
             } else {
                 addBtn.style.display = 'block';
+                progressText.innerText = `Đang random trong ${activePoolSize} câu (Tổng bài có ${currentLessonQuestions.length} câu)`;
             }
         }
+
+        document.addEventListener('click', function(e) {
+            if (isAnswered) {
+                if (e.target.id === 'add-btn' || e.target.id === 'lesson-select' || e.target.id === 'random-btn') {
+                    return;
+                }
+                showRandomQuestion();
+            }
+        });
     </script>
 </body>
 </html>
