@@ -133,6 +133,7 @@
             <option value="bai3">Bài 3: Phòng chống vi phạm pháp luật bảo vệ môi trường</option>
             <option value="bai4">Bài 4: Phòng chống vi phạm pháp luật an toàn giao thông</option>
             <option value="bai5">Bài 5: Phòng chống tội phạm và tệ nạn xã hội</option>
+            <option value="all" style="font-weight: bold; color: var(--primary-color);">🔥 Tổng hợp: Tất cả các bài</option>
         </select>
     </div>
 
@@ -163,6 +164,7 @@
         }
 
         // Bắt đầu bài học
+        // Bắt đầu bài học
         function startLesson() {
             const lessonKey = document.getElementById('lesson-select').value;
             const container = document.getElementById('quiz-container');
@@ -173,20 +175,32 @@
             // Xóa dữ liệu cũ
             container.innerHTML = '';
 
-            if (lessonKey === 'none' || !database[lessonKey]) {
+            // Nếu chưa chọn bài thì ẩn các nút
+            if (lessonKey === 'none') {
                 randomBtn.style.display = 'none';
                 addBtn.style.display = 'none';
                 progressText.innerText = '';
                 return;
             }
 
-            // Lấy nguyên danh sách gốc của bài học (không xáo trộn mảng gốc để lấy đúng thứ tự từ đầu)
-            currentLessonQuestions = database[lessonKey];
+            // Xử lý logic gộp bài
+            if (lessonKey === 'all') {
+                let allQuestions = [];
+                // Lặp qua toàn bộ database để gộp câu hỏi
+                for (let key in database) {
+                    allQuestions = allQuestions.concat(database[key]);
+                }
+                // Xáo trộn toàn bộ để 5 câu đầu tiên được lấy từ các bài khác nhau
+                currentLessonQuestions = shuffleArray(allQuestions);
+            } else {
+                // Nếu chọn bài cụ thể thì lấy đúng danh sách bài đó
+                currentLessonQuestions = database[lessonKey];
+            }
 
             // Mở khóa 5 câu đầu tiên
             activePoolSize = Math.min(POOL_INCREMENT, currentLessonQuestions.length);
 
-            // Hiển thị nút
+            // Hiển thị nút Câu ngẫu nhiên
             randomBtn.style.display = 'block';
 
             // Rút 1 câu ngẫu nhiên trong pool đầu tiên
