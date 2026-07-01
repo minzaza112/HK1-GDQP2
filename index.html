@@ -154,6 +154,11 @@
         const POOL_INCREMENT = 5;
         let isAnswered = false;
 
+        // --- CÁC BIẾN PHỤC VỤ LOGIC MỚI ---
+        let questionStartTime = 0; // Lưu thời gian bắt đầu câu hỏi
+        const TIME_THRESHOLD = 8500; // Ngưỡng thời gian "lâu" (7000ms = 7 giây)
+
+        // Hàm xáo trộn mảng (dùng cho đáp án)
         function shuffleArray(array) {
             let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -163,6 +168,17 @@
             return arr;
         }
 
+        // Khởi tạo hoặc chuẩn bị câu hỏi (thêm thuộc tính weight nếu chưa có)
+        function prepareQuestions(questions) {
+            return questions.map(q => {
+                if (q.weight === undefined) {
+                    q.weight = 1; // Trọng số mặc định ban đầu là 1
+                }
+                return q;
+            });
+        }
+
+        // Bắt đầu bài học
         function startLesson() {
             const lessonKey = document.getElementById('lesson-select').value;
             const container = document.getElementById('quiz-container');
@@ -185,9 +201,11 @@
                 for (let key in database) {
                     allQuestions = allQuestions.concat(database[key]);
                 }
-                currentLessonQuestions = shuffleArray(allQuestions);
+                // Xáo trộn danh sách tổng hợp
+                currentLessonQuestions = prepareQuestions(shuffleArray(allQuestions));
             } else {
-                currentLessonQuestions = database[lessonKey];
+                // Lấy danh sách bài cụ thể sâu và giữ nguyên thứ tự gốc để cắt slice theo pool
+                currentLessonQuestions = prepareQuestions(database[lessonKey]);
             }
 
             activePoolSize = Math.min(POOL_INCREMENT, currentLessonQuestions.length);
@@ -201,6 +219,27 @@
             showRandomQuestion();
         }
 
+        // HÀM QUAN TRỌNG: Bốc ngẫu nhiên dựa trên trọng số (Weight)
+        function getWeightedRandomQuestion() {
+            // Chỉ lấy các câu hỏi nằm trong phạm vi Pool đang mở khóa
+            const availableQuestions = currentLessonQuestions.slice(0, activePoolSize);
+
+            // Tính tổng tất cả trọng số của các câu đang có
+            const totalWeight = availableQuestions.reduce((sum, q) => sum + q.weight, 0);
+
+            // Quay số ngẫu nhiên từ 0 đến tổng trọng số
+            let randomNum = Math.random() * totalWeight;
+
+            // Duyệt qua từng câu, trừ dần trọng số để tìm câu trúng thưởng
+            for (let i = 0; i < availableQuestions.length; i++) {
+                randomNum -= availableQuestions[i].weight;
+                if (randomNum <= 0) {
+                    return availableQuestions[i]; // Trả về câu hỏi trúng giải
+                }
+            }
+            return availableQuestions[0]; // Phương án dự phòng
+        }
+
         function showRandomQuestion() {
             const container = document.getElementById('quiz-container');
             const addBtn = document.getElementById('add-btn');
@@ -211,11 +250,22 @@
             isAnswered = false;
             container.innerHTML = '';
 
-            const randomIndex = Math.floor(Math.random() * activePoolSize);
-            const qData = currentLessonQuestions[randomIndex];
+            // Thay vì random index đều nhau, ta dùng hàm bốc theo trọng số mới viết ở trên
+            const qData = getWeightedRandomQuestion();
+
+            // Ghi lại thời gian bắt đầu hiện câu hỏi (tính theo miligiây)
+            questionStartTime = Date.now();
 
             const card = document.createElement('div');
             card.className = 'question-card';
+
+            // Hiển thị thêm thông tin Độ khó/Trọng số hiện tại của câu hỏi để bạn dễ theo dõi
+            const debugInfo = document.createElement('span');
+            debugInfo.style.fontSize = '12px';
+            debugInfo.style.color = '#999';
+            debugInfo.style.float = 'right';
+            debugInfo.innerText = `Độ ưu tiên: ${qData.weight}`;
+            card.appendChild(debugInfo);
 
             const title = document.createElement('h3');
             title.className = 'question-title';
@@ -233,25 +283,34 @@
                 btn.innerText = opt.text;
 
                 btn.onclick = function(e) {
-                    // Nếu đã trả lời rồi, DỪNG xử lý logic chấm điểm ở đây
-                    // và cho phép cú click xuyên qua để document bắt được sự kiện chuyển câu
                     if (isAnswered) return;
-
-                    // Nếu CHƯA trả lời, chặn cú click lại để không bị tự nhảy câu ngay lúc vừa chọn
                     e.stopPropagation();
 
+                    // Tính thời gian trả lời (s)
+                    const timeTaken = Date.now() - questionStartTime;
                     const allBtns = optionsContainer.querySelectorAll('.option-btn');
 
-                    // Bỏ b.disabled = true đi, thay bằng việc đổi con trỏ chuột
                     allBtns.forEach(b => {
                         b.style.cursor = 'default';
                         b.style.opacity = '0.9';
                     });
 
+                    let statusText = "";
+
                     if (opt.correct) {
                         btn.style.backgroundColor = 'var(--correct-color)';
                         btn.style.color = 'white';
                         btn.style.borderColor = 'var(--correct-color)';
+
+                        // Kiểm tra xem có làm quá thời gian quy định không
+                        if (timeTaken > TIME_THRESHOLD) {
+                            qData.weight += 1; // Đúng nhưng lâu -> Tăng nhẹ tần suất
+                            statusText = `Đúng nhưng hơi chậm (${(timeTaken/1000).toFixed(1)}s). Câu này sẽ xuất hiện lại sớm hơn!`;
+                        } else {
+                            // Đúng và nhanh -> Giảm bớt trọng số (tối thiểu là 1 để không bị mất hẳn)
+                            if (qData.weight > 1) qData.weight -= 1;
+                            statusText = `Xuất sắc! Trả lời đúng trong ${(timeTaken/1000).toFixed(1)}s.`;
+                        }
                     } else {
                         btn.style.backgroundColor = 'var(--wrong-color)';
                         btn.style.color = 'white';
@@ -263,10 +322,14 @@
                                 b.style.color = 'white';
                             }
                         });
+
+                        // TRẢ LỜI SAI -> Tăng mạnh trọng số lên để câu này liên tục xuất hiện lại
+                        qData.weight += 2;
+                        statusText = `Chưa chính xác! Câu này đã được tăng tỷ lệ xuất hiện để bạn ôn tập lại.`;
                     }
 
                     isAnswered = true;
-                    progressText.innerHTML = `Đang random trong ${activePoolSize}/${currentLessonQuestions.length} câu <br><strong style="color:var(--primary-color)">(Bấm vào bất kỳ đâu để tiếp tục)</strong>`;
+                    progressText.innerHTML = `<span style="color:#666; font-size:14px;">${statusText}</span><br>Đang mở khóa: ${activePoolSize}/${currentLessonQuestions.length} câu <br><strong style="color:var(--primary-color)">(Bấm vào bất kỳ đâu để tiếp tục)</strong>`;
                 };
                 optionsContainer.appendChild(btn);
             });
