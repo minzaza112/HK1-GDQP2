@@ -917,5 +917,133 @@ const database = {
                 { text: 'Trách nhiệm tự bảo vệ mình, ký kết không tham gia các hoạt động tệ nạn xã hội và tội phạm.', correct: false } // [cite: 334, 335]
             ]
         }
+    ],
+    "bai6": [
+        {
+            //
+            q: 'Thông tin là gì?',
+            a: [
+                { text: 'Là sự phản ánh thế giới tự nhiên, xã hội và tư duy của con người.', correct: false },
+                { text: 'Là sự phản ánh về một đối tượng trong quá trình hoạt động thực tiễn.', correct: false },
+                { text: 'Là sự phản ánh của tự nhiên và xã hội bằng ngôn từ, ký hiệu, hình ảnh.', correct: true },
+                { text: 'Là sự phản ánh thế giới khách quan của con người trong quá trình hoạt động.', correct: false }
+            ]
+        },
+        {
+            //
+            q: 'An toàn thông tin là gì?',
+            a: [
+                { text: 'An toàn tuyệt đối bí mật các thông tin về an ninh quốc gia', correct: false },
+                { text: 'An toàn kỹ thuật cho các hoạt động của các cơ sở hạ tầng thông tin.', correct: true },
+                { text: 'An toàn của các dữ liệu trong quá trình truyền tải qua các phương tiện.', correct: false },
+                { text: 'An toàn trong thực hiện đường lối chủ trương chính sách của Đảng, Nhà nước.', correct: false }
+            ]
+        },
+        {
+            //
+            q: 'Thực trạng thông tin ở Việt Nam?',
+            a: [
+                { text: 'Phá hoại hạ tầng mạng thông tin, ảnh hưởng tới an ninh quốc gia', correct: false },
+                { text: 'An toàn an ninh mạng tiếp tục diễn biến phức tạp', correct: false },
+                { text: 'Tồn tại nhiều cơ sở gây nguy cơ bị tấn công', correct: false },
+                { text: 'Tất cả đều đúng.', correct: true }
+            ]
+        },
+        {
+            //
+            q: 'Một trong những nguyên tắc bảo vệ không gian mạng là:',
+            a: [
+                { text: 'Tuân thủ Hiến pháp và pháp luật', correct: true },
+                { text: 'Thực hiện tốt các qui định của Nhà nước', correct: false },
+                { text: 'Nghiêm cấm xuyên tạc chủ trương của Đảng, Nhà nước', correct: false },
+                { text: 'Chủ động phát hiện, phòng ngừa các hoạt động vi phạm pháp luật', correct: false }
+            ]
+        },
+        {
+            //
+            q: 'Một trong những nguyên tắc bảo vệ không gian mạng là:',
+            a: [
+                { text: 'Thực hiện tốt các qui định của Nhà nước', correct: false },
+                { text: 'Nghiêm cấm xuyên tạc chủ trương của Đảng, Nhà nước', correct: false },
+                { text: 'Chủ động phát hiện, phòng ngừa các hoạt động vi phạm pháp luật', correct: false },
+                { text: 'Phát huy vai trò nòng cốt của lực lượng chuyên trách bảo vệ an ninh mạng', correct: true }
+            ]
+        },
+        {
+            //
+            q: 'Điều 101 Nghị định 15 qui định mức xử phạt hành vi lợi dụng mạng xã hội để cung cấp, chia sẻ thông tin giả mạo...',
+            a: [
+                { text: 'Phạt tiền từ 5 đến 10 triệu đồng.', correct: false },
+                { text: 'Phạt tiền từ 10 đến 20 triệu đồng.', correct: true },
+                { text: 'Phạt tiền từ 20 đến 25 triệu đồng.', correct: false },
+                { text: 'Phạt tiền từ 20 đến 30 triệu đồng.', correct: false }
+            ]
+        },
+        {
+            //
+            q: 'Mức phạt đối với hành vi gửi hoặc phát tán thư điện tử rác, tin nhắn rác, phần mềm độc hại:',
+            a: [
+                { text: 'Phạt tiền 60 triệu đồng', correct: false },
+                { text: 'Phạt tiền 70 triệu đồng', correct: false },
+                { text: 'Phạt tiền 80 triệu đồng', correct: true },
+                { text: 'Phạt tiền 90 triệu đồng', correct: false }
+            ]
+        },
+        {
+            //
+            q: 'Điều 16, thông tin trên không gian mạng có nội dung tuyên truyền chống Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam bao gồm:',
+            a: [
+                { text: 'Tuyên truyền xuyên tạc, phỉ báng chính quyền nhân dân;', correct: false },
+                { text: 'Xúc phạm dân tộc, quốc kỳ, quốc huy, quốc ca, vĩ nhân, lãnh tụ, danh nhân, anh hùng dân tộc', correct: false },
+                { text: 'Chiến tranh tâm lý, kích động chiến tranh xâm lược, chia rẽ, gây thù hận giữa các dân tộc, tôn giáo và nhân dân các nước;', correct: false },
+                { text: 'Tất cả đều đúng.', correct: true }
+            ]
+        },
+        {
+            //
+            q: 'Một trong các biện pháp, phòng chống trên không gian mạng là:',
+            a: [
+                { text: 'Giáo dục nâng cao cảnh giác về đảm bảo an toàn thông tin, các lợi ích và sự nguy hại đến từ không gian mạng.', correct: false },
+                { text: 'Giáo dục nâng cao nhận thức về bảo vệ chủ quyền quốc gia, các lợi ích và sự nguy hại đến từ không gian mạng.', correct: true },
+                { text: 'Giáo dục ý thức cho mọi người trong việc bảo mật các thông tin của Đảng, Nhà nước và các tổ chức chính trị-xã hội.', correct: false },
+                { text: 'Giáo dục nâng cao cảnh giác cách mạng chống mọi thủ đoạn vi phạm an toàn thông tin và sự nguy hại đến từ không gian mạng.', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong các biện pháp, phòng chống trên không gian mạng là:', //
+            a: [
+                { text: 'Tuyên truyền, giáo dục các quy định của Đảng, Nhà nước về quản lý không gian mạng.', correct: false }, //
+                { text: 'Tuyên truyền đường lối, chủ trương của Đảng, Nhà nước về quản lý không gian mạng.', correct: false }, //
+                { text: 'Tuyên truyền, phổ biến, giáo dục các quy định của pháp luật về quản lý không gian mạng.', correct: true }, //
+                { text: 'Tuyên truyền các quy định của pháp luật cho mọi người về quản lý không gian mạng.', correct: false } //
+            ]
+        },
+        {
+            q: 'Một trong các biện pháp, phòng chống trên không gian mạng là:', //
+            a: [
+                { text: 'Bồi dưỡng kiến thức và các kỹ năng phòng, chống tấn công mạng và các hành động phát tán trên không gian mạng.', correct: false }, //
+                { text: 'Bồi dưỡng kỹ năng nhận diện các âm mưu, thủ đoạn tấn công mạng và các hình thái phát sinh trên không gian mạng.', correct: true }, //
+                { text: 'Bồi dưỡng kỹ năng, chuyên môn nghiệp vụ về thủ đoạn tấn công mạng và các hình thái phát sinh trên không gian mạng.', correct: false }, //
+                { text: 'Bồi dưỡng kỹ năng cho đội ngũ nhân viên, chuyên trách làm công tác thông tin nhận diện các âm mưu, thủ đoạn tấn công trên không gian mạng.', correct: false } //
+            ]
+        },
+        {
+            q: 'Các biện pháp kỹ thuật bảo đảm an toàn thông tin:', //
+            a: [
+                { text: 'Bảo vệ tài khoản cá nhân', correct: false }, //
+                { text: 'Tạo thói quen quét virus', correct: false }, //
+                { text: 'Sao lưu dự phòng trên ổ cứng ngoài', correct: false }, //
+                { text: 'Tất cả đều đúng.', correct: true } //
+            ]
+        },
+        {
+            q: 'Các cơ quan chuyên trách an ninh mạng', //
+            a: [
+                { text: 'Cục An ninh mạng và phòng, chống tội phạm sử dụng công nghệ cao, Bộ Công an', correct: false }, //
+                { text: 'Lực lượng bảo vệ an ninh mạng tại bộ, ngành, ủy ban nhân dân tỉnh...', correct: false }, //
+                { text: 'Bộ Tư lệnh Tác chiến không gian mạng, Bộ Quốc phòng', correct: false }, //
+                { text: 'Tất cả đều đúng.', correct: true } //
+            ]
+        }
     ]
 };
