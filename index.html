@@ -122,7 +122,7 @@
             font-size: 14px;
             color: #666;
             margin-top: 15px;
-            min-height: 60px; /* Giữ khoảng trống cố định nhẹ để các nút bên dưới không bị nảy quá mạnh */
+            min-height: 60px;
         }
     </style>
 </head>
@@ -152,10 +152,8 @@
         </select>
     </div>
 
-    <!-- KHUNG CÂU HỎI ĐƯỢC CHUYỂN LÊN TRÊN -->
     <div id="quiz-container"></div>
 
-    <!-- DÒNG THÔNG BÁO ĐƯỢC CHUYỂN XUỐNG DƯỚI ĐỂ KHÔNG ĐẨY KHUNG CÂU HỎI -->
     <div class="progress-text" id="progress-text"></div>
 
     <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -225,7 +223,18 @@
         }
 
         function expandPool() {
+            // Lưu lại số lượng câu hỏi trước khi thêm
+            const oldSize = activePoolSize; 
+            
+            // Tăng số lượng câu hỏi hiện có
             activePoolSize = Math.min(activePoolSize + POOL_INCREMENT, currentLessonQuestions.length);
+            
+            // Lặp qua CÁC CÂU HỎI VỪA ĐƯỢC THÊM MỚI và đẩy trọng số lên cao (VD: 4)
+            // Việc này giúp chúng có tỷ lệ xuất hiện cao hơn hẳn so với các câu cũ
+            for (let i = oldSize; i < activePoolSize; i++) {
+                currentLessonQuestions[i].weight = 4;
+            }
+
             showRandomQuestion();
         }
 
