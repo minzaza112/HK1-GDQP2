@@ -1045,5 +1045,196 @@ const database = {
                 { text: 'Tất cả đều đúng.', correct: true } //
             ]
         }
+    ],
+    "bai7": [
+        {
+            q: 'Một trong các mục tiêu của an ninh quốc gia là:',
+            a: [
+                { text: 'Bảo vệ lợi ích quốc gia dân tộc', correct: false },
+                { text: 'Củng cố nền tảng vững chắc bên trong', correct: true },
+                { text: 'Bảo vệ quyền lợi của quần chúng nhân dân lao động', correct: false },
+                { text: 'Bảo vệ trật tự, an toàn xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong các mục tiêu của an ninh quốc gia là:',
+            a: [
+                { text: 'Bảo vệ lợi ích quốc gia dân tộc', correct: false },
+                { text: 'Bảo vệ quyền lợi của quần chúng nhân dân lao động', correct: false },
+                { text: 'Bảo vệ vững chắc chủ quyền và thể chế chính trị quốc gia', correct: true },
+                { text: 'Bảo vệ trật tự, an toàn xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong những nội dung của an ninh quốc gia là gì?',
+            a: [
+                { text: 'Bảo vệ lãnh thổ quốc gia', correct: false },
+                { text: 'An ninh quân sự, an ninh xã hội', correct: true },
+                { text: 'Phòng ngừa sự chống phá từ bên trong', correct: false },
+                { text: 'Phòng ngừa sự chống phá từ bên ngoài', correct: false }
+            ]
+        },
+        {
+            q: 'Trọng tâm bảo đảm an ninh quốc gia là gì?',
+            a: [
+                { text: 'Bảo vệ lợi ích và chủ quyền quốc gia', correct: true },
+                { text: 'Bảo vệ lãnh thổ quốc gia', correct: false },
+                { text: 'Phòng ngừa sự chống phá từ bên trong', correct: false },
+                { text: 'Phòng ngừa sự chống phá từ bên ngoài', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong những thách thức, nguy cơ đối với an ninh quốc gia là:',
+            a: [
+                { text: 'Nguy cơ xâm phạm chủ quyền biển, đảo', correct: true },
+                { text: 'Nguy cơ đến lợi ích quốc gia dân tộc', correct: false },
+                { text: 'Nguy cơ đến quyền lợi của quần chúng nhân dân lao động', correct: false },
+                { text: 'Nguy cơ đến bảo vệ trật tự, an toàn xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Phương hướng, nhiệm vụ bảo vệ an ninh quốc gia là:',
+            a: [
+                { text: 'Xây dựng lực lượng vũ trang tinh nhuệ về chính trị', correct: false },
+                { text: 'Đẩy mạnh sự nghiệp công nghiệp hóa, hiện đại hóa đất nước', correct: false },
+                { text: 'Phát huy mạnh mẽ sức mạnh tổng hợp của toàn dân tộc', correct: true },
+                { text: 'Xây dựng khối đại đoàn kết toàn dân tộc vững mạnh', correct: false }
+            ]
+        },
+        {
+            q: 'An ninh phi truyền thống xuất hiện vào thời kỳ nào?',
+            a: [
+                { text: 'Xuất hiện sau chiến tranh thế giới thứ nhất', correct: false },
+                { text: 'Xuất hiện sau chiến tranh thế giới thứ hai', correct: false },
+                { text: 'Xuất hiện sau chiến tranh giải phóng ở Việt Nam 1975', correct: false },
+                { text: 'Xuất hiện trong vài thập niên gần đây', correct: true }
+            ]
+        },
+        {
+            q: 'Thế nào là an ninh phi truyền thống?',
+            a: [
+                { text: 'Là an ninh có ảnh hưởng đến mọi mặt của một quốc gia dân tộc', correct: false },
+                { text: 'Là an ninh gây nên sự khủng hoảng toàn diện của đời sống xã hội', correct: false },
+                { text: 'Là an ninh do các thế lực thù địch trong và ngoài nước tạo ra', correct: false },
+                { text: 'Là an ninh do những yếu tố phi chính trị, phi quân sự gây ra', correct: true }
+            ]
+        },
+        {
+            q: 'Một trong những nội dung của an ninh phi truyền thống là:',
+            a: [
+                { text: 'Phân hóa giàu nghèo ngày càng ra tăng', correct: false },
+                { text: 'Cạn kiệt tài nguyên, ô nhiễm môi trường', correct: true },
+                { text: 'Xuất hiện các loại tệ nạn và tội phạm xã hội', correct: false },
+                { text: 'Gây ra những cuộc khủng hoảng kinh tế - xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Quá trình toàn cầu hóa quốc tế ảnh hưởng đến an ninh phi truyền thống như thế nào?',
+            a: [
+                { text: 'An ninh phi truyền thống ngày càng thu hẹp hơn', correct: false },
+                { text: 'An ninh phi truyền thống ngày càng kiểm soát tốt hơn', correct: false },
+                { text: 'An ninh phi truyền thống ngày càng phức tạp hơn', correct: false },
+                { text: 'An ninh phi truyền thống ngày càng đậm nét hơn', correct: true }
+            ]
+        },
+        {
+            q: 'Giải quyết các nội dung của an ninh phi truyền thống là nhiệm vụ của:',
+            a: [
+                { text: 'Các nước công nghiệp phát triển', correct: false },
+                { text: 'Là nhiệm vụ mang tính toàn cầu', correct: true },
+                { text: 'Của lực lượng gìn giữ hòa bình thế giới', correct: false },
+                { text: 'Các nước lạc hậu kinh tế kém phát triển', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong những thách thức của an ninh phi truyền thống đối với nước ta là:',
+            a: [
+                { text: 'Làm cho biến đổi khí hậu', correct: false },
+                { text: 'Làm cho khoảng cách giàu, nghèo ra tăng', correct: false },
+                { text: 'Làm ảnh hưởng đến sự phát triển kinh tế - xã hội', correct: true },
+                { text: 'Là nguyên nhân gây mất ổn định chính trị, xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong những thách thức của an ninh phi truyền thống đối với nước ta là:',
+            a: [
+                { text: 'Làm cho nền kinh tế kém phát triển', correct: true },
+                { text: 'Làm cho mâu thuẫn trong xã hội ra tăng', correct: false },
+                { text: 'Là nguyên nhân dẫn đến tội phạm xã hội', correct: false },
+                { text: 'Là nguyên nhân gây mất ổn định chính trị, xã hội', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong những thách thức của an ninh phi truyền thống đối với nước ta là:',
+            a: [
+                { text: 'Làm cho tội phạm kinh tế - xã hội gia tăng', correct: false },
+                { text: 'Làm suy giảm đến sự phát triển kinh tế - xã hội', correct: false },
+                { text: 'Là nguyên nhân dẫn đến mất trật tự an toàn xã hội', correct: false },
+                { text: 'Làm mất lòng tin của nhân dân đối với Đảng, Nhà nước', correct: true }
+            ]
+        },
+        {
+            q: 'Thách thức của an ninh phi truyền thống đối với lĩnh vực quốc phòng an ninh là:',
+            a: [
+                { text: 'Đe dọa đến an ninh chính trị đất nước', correct: false },
+                { text: 'Đe dọa trực tiếp đến quốc phòng an ninh', correct: true },
+                { text: 'Cản trở đến xây dựng nền quốc phòng toàn dân', correct: false },
+                { text: 'Cản trở đến quá trình xây dựng Quân đội trong tình hình mới', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong các giải pháp với các mối đe dọa an ninh phi truyền thống là:',
+            a: [
+                { text: 'Nâng cao cảnh giác giữ vững chủ quyền an ninh quốc gia', correct: false },
+                { text: 'Nâng cao nhận thức về các mối đe dọa an ninh phi truyền thống', correct: true },
+                { text: 'Nâng cao cảnh giác tích cực tham gia các hoạt động phòng chống', correct: false },
+                { text: 'Nâng cao tinh thần cảnh giác cách mạng, phát hiện, đấu tranh, ngăn ngừa', correct: false }
+            ]
+        },
+        {
+            q: 'Một trong các giải pháp với các mối đe dọa an ninh phi truyền thống là:',
+            a: [
+                { text: 'Chủ động, tích cực phòng ngừa, ứng phó', correct: true },
+                { text: 'Chủ động trong xây dựng kế hoạch phòng chống', correct: false },
+                { text: 'Chủ động ứng phó có hiệu quả với các mối đe dọa', correct: false },
+                { text: 'Chủ động và tích cực đầu tư cho công tác phòng chống', correct: false }
+            ]
+        },
+        {
+            q: 'Trong chủ động phòng ngừa, ứng phó cần:',
+            a: [
+                { text: 'Phân loại từng lĩnh vực', correct: false },
+                { text: 'Chủ động và tích cực đầu tư', correct: false },
+                { text: 'Chủ động xây dựng lực lượng', correct: false },
+                { text: 'Tất cả đều đúng', correct: true }
+            ]
+        },
+        {
+            q: 'Một trong các giải pháp với các mối đe dọa an ninh phi truyền thống là:',
+            a: [
+                { text: 'Phát huy vai trò của các tổ chức quần chúng', correct: false },
+                { text: 'Phát huy sức mạnh tổng hợp của hệ thống chính trị', correct: true },
+                { text: 'Chủ động trong xây dựng kế hoạch phòng ngừa ứng phó', correct: false },
+                { text: 'Phát huy vai trò của các tổ chức tự quản trong phòng ngừa', correct: false }
+            ]
+        },
+        {
+            q: 'Trong giải pháp tăng cường hợp tác quốc tế về phòng ngừa cần:',
+            a: [
+                { text: 'Chủ động, tích cực hợp tác', correct: false },
+                { text: 'Xây dựng cơ chế lòng tin', correct: false },
+                { text: 'Tăng cường chia sẻ thông tin', correct: false },
+                { text: 'Tất cả đều đúng', correct: true }
+            ]
+        },
+        {
+            q: 'Huy động nguồn lực tài chính bằng:',
+            a: [
+                { text: 'Nguồn tài chính ngân sách', correct: false },
+                { text: 'Nguồn tài chính doanh nghiệp', correct: false },
+                { text: 'Nguồn tài chính xã hội hóa', correct: false },
+                { text: 'Tất cả đều đúng', correct: true }
+            ]
+        }
     ]
 };
